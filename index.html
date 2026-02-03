@@ -14,7 +14,7 @@
   body {
     margin: 0;
     height: 100vh;
-    background: #ffffff;
+    background: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,14 +27,31 @@
     max-width: 400px;
   }
 
-  img {
-    width: 220px;
-    margin-bottom: 20px;
+  .character {
+    font-size: 90px;
+    animation: bounce 1.6s infinite;
+    margin-bottom: 10px;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .heart {
+    font-size: 50px;
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
   }
 
   h2 {
     font-weight: 500;
-    margin-bottom: 20px;
+    margin: 20px 0;
   }
 
   .buttons {
@@ -61,7 +78,6 @@
     background: #e5e5e5;
   }
 
-  /* FULLSCREEN YES */
   .fullscreen {
     position: fixed;
     inset: 0;
@@ -72,10 +88,9 @@
     z-index: 10;
   }
 
-  /* CONFETTI / FLOWERS */
   .float {
     position: fixed;
-    font-size: 30px;
+    font-size: 32px;
     animation: fall 3s linear forwards;
     pointer-events: none;
   }
@@ -88,9 +103,10 @@
 </head>
 
 <body>
-  <div class="container" id="container">
-    <!-- Minion image (same character as video) -->
-    <img src="https://i.imgur.com/9QZ7Z4F.png" alt="minion">
+  <div class="container">
+    <!-- Cute animated character -->
+    <div class="character">🥺</div>
+    <div class="heart">❤️</div>
 
     <h2 id="text">Lolade will you be my valentine ?</h2>
 
@@ -105,8 +121,8 @@
     "Are you sure?",
     "You don’t know what you’re missing 😏",
     "Please pretty please 🥺",
-    "Don’t break my heart 💔",
-    "Last chance 😭"
+    "Don’t do me like this 💔",
+    "I’ll be sad forever 😭"
   ];
 
   let noCount = 0;
@@ -118,8 +134,7 @@
       noBtn.innerText = noTexts[noCount];
       noCount++;
 
-      // Grow YES button
-      const scale = 1 + noCount * 0.4;
+      const scale = 1 + noCount * 0.45;
       yesBtn.style.transform = `scale(${scale})`;
 
       if (scale > 3) {
@@ -130,12 +145,12 @@
 
   yesBtn.addEventListener("click", () => {
     document.body.innerHTML = "";
-    launchCelebration();
+    celebrate();
   });
 
-  function launchCelebration() {
-    const emojis = ["🎈","🌹","❤️","💐"];
-    for (let i = 0; i < 80; i++) {
+  function celebrate() {
+    const emojis = ["🎈","🌹","❤️","💐","🎉"];
+    for (let i = 0; i < 90; i++) {
       const el = document.createElement("div");
       el.className = "float";
       el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
