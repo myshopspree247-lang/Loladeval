@@ -1,80 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Valentine Animation</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Valentine</title>
+
 <style>
+  * {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
   body {
     margin: 0;
+    height: 100vh;
+    background: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: #ffedf3;
-    font-family: Arial, sans-serif;
+    overflow: hidden;
   }
 
-  .card {
-    width: 350px;
-    padding: 20px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  .container {
     text-align: center;
-    opacity: 0;
-    transform: scale(0.8);
-    animation: popIn 1s ease-out forwards;
+    width: 90%;
+    max-width: 400px;
   }
 
-  .card h1 {
-    margin: 0;
-    font-size: 24px;
-    color: #d61f6a;
+  img {
+    width: 220px;
+    margin-bottom: 20px;
   }
 
-  .heart {
-    font-size: 48px;
-    animation: pulse 1s infinite alternate ease-in-out;
-    color: #d61f6a;
+  h2 {
+    font-weight: 500;
+    margin-bottom: 20px;
   }
 
-  @keyframes popIn {
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
   }
 
-  @keyframes pulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.2); }
+  button {
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
   }
 
-  .tweet {
-    margin-top: 15px;
-    font-size: 18px;
-    color: #333;
+  #yes {
+    background: #34c759;
+    color: white;
   }
 
+  #no {
+    background: #e5e5e5;
+  }
+
+  /* FULLSCREEN YES */
+  .fullscreen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    font-size: 40px;
+    border-radius: 0;
+    z-index: 10;
+  }
+
+  /* CONFETTI / FLOWERS */
+  .float {
+    position: fixed;
+    font-size: 30px;
+    animation: fall 3s linear forwards;
+    pointer-events: none;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-50px); opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+  }
 </style>
 </head>
-<body>
 
-<div class="card">
-  <div class="heart">❤️</div>
-  <h1>LOLade</h1>
-  <div class="tweet">will you be my valentine ?</div>
-</div>
+<body>
+  <div class="container" id="container">
+    <!-- Minion image (same character as video) -->
+    <img src="https://i.imgur.com/9QZ7Z4F.png" alt="minion">
+
+    <h2 id="text">Lolade will you be my valentine ?</h2>
+
+    <div class="buttons">
+      <button id="yes">Yes</button>
+      <button id="no">No</button>
+    </div>
+  </div>
 
 <script>
-  // optional: show the card after a delay
-  document.addEventListener("DOMContentLoaded", () => {
-    const card = document.querySelector(".card");
-    setTimeout(() => {
-      card.style.animation = "popIn 1s ease forwards";
-    }, 500);
-  });
-</script>
+  const noTexts = [
+    "Are you sure?",
+    "You don’t know what you’re missing 😏",
+    "Please pretty please 🥺",
+    "Don’t break my heart 💔",
+    "Last chance 😭"
+  ];
 
+  let noCount = 0;
+  const yesBtn = document.getElementById("yes");
+  const noBtn = document.getElementById("no");
+
+  noBtn.addEventListener("click", () => {
+    if (noCount < noTexts.length) {
+      noBtn.innerText = noTexts[noCount];
+      noCount++;
+
+      // Grow YES button
+      const scale = 1 + noCount * 0.4;
+      yesBtn.style.transform = `scale(${scale})`;
+
+      if (scale > 3) {
+        yesBtn.classList.add("fullscreen");
+      }
+    }
+  });
+
+  yesBtn.addEventListener("click", () => {
+    document.body.innerHTML = "";
+    launchCelebration();
+  });
+
+  function launchCelebration() {
+    const emojis = ["🎈","🌹","❤️","💐"];
+    for (let i = 0; i < 80; i++) {
+      const el = document.createElement("div");
+      el.className = "float";
+      el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.animationDuration = 2 + Math.random() * 2 + "s";
+      document.body.appendChild(el);
+
+      setTimeout(() => el.remove(), 4000);
+    }
+  }
+</script>
 </body>
 </html>
